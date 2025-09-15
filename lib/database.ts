@@ -1,16 +1,17 @@
+
 import Database from "better-sqlite3"
 import path from "path"
 import type { AttendanceRecord, User } from "./types";
 
 const dbPath = path.join(process.cwd(), "attendance.db")
 console.log("Database path:", dbPath);
-const db = new Database(dbPath)
+export const db = new Database(dbPath)
 
 const toSqliteTimestamp = (date: Date) => {
   return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-export function initializeDatabase() {
+export function setupTables() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -164,8 +165,3 @@ export function decideActionAndStatus(userId: number, now: Date) {
   // Fallback case (should not be reached)
   return { action: null, status: "Trạng thái không xác định" };
 }
-
-// Initialize database on import
-initializeDatabase()
-
-export default db

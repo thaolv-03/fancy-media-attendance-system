@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import db, { getUsers, getAttendanceRecords } from '@/lib/database';
+import { db, getUsers, getAttendanceRecords } from '@/lib/database';
 
 // Helper function to get today's date range in YYYY-MM-DD HH:MM:SS format
 const getTodayDateRangeISO = () => {
