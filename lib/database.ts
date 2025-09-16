@@ -20,7 +20,7 @@ export function setupTables() {
       qr_code TEXT UNIQUE NOT NULL,
       created_at DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'now'))
     )
-  `)
+  `);
   db.exec(`
     CREATE TABLE IF NOT EXISTS attendance (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,11 +29,18 @@ export function setupTables() {
       check_type TEXT NOT NULL,
       status TEXT NOT NULL,
       timestamp DATETIME NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES users (id)
+      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     )
-  `)
-  db.exec(`CREATE INDEX IF NOT EXISTS idx_attendance_user_id ON attendance(user_id);`)
-  db.exec(`CREATE INDEX IF NOT EXISTS idx_attendance_timestamp ON attendance(timestamp);`)
+  `);
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS admins (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
+    )
+  `);
+  db.exec(`CREATE INDEX IF NOT EXISTS idx_attendance_user_id ON attendance(user_id);`);
+  db.exec(`CREATE INDEX IF NOT EXISTS idx_attendance_timestamp ON attendance(timestamp);`);
 }
 
 // User operations
@@ -56,6 +63,30 @@ export function getUsersWithEmbeddings() {
 export function getUserById(id: number): User {
   const stmt = db.prepare(`SELECT * FROM users WHERE id = ?`)
   return stmt.get(id) as User;
+}
+
+export function updateUser(id: number, data: { name?: string; qrCode?: string }) {
+  const fields = [];
+  const values = [];
+
+  if (data.name) {
+    fields.push('name = ?');
+    values.push(data.name);
+  }
+  if (data.qrCode) {
+    fields.push('qr_code = ?');
+    values.push(data.qrCode);
+  }
+
+  if (fields.length === 0) {
+    return { changes: 0, lastInsertRowid: id };
+  }
+
+  values.push(id);
+
+  const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+  const stmt = db.prepare(sql);
+  return stmt.run(...values);
 }
 
 export function deleteUser(id: number) {

@@ -1,38 +1,76 @@
-'use client'
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// Use 'use client' to be able to use the useSearchParams hook for reading URL errors
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+
+// A small component to display success or error messages from the server
+function FormMessage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+  const success = searchParams.get('success');
+
+  if (error) {
+    return <p className="text-red-500 text-sm mb-4">{error}</p>;
+  }
+  if (success) {
+    return <p className="text-green-500 text-sm mb-4">{success}</p>;
+  }
+  return null;
+}
 
 export default function SettingsPage() {
-    return (
-        <div className="space-y-4">
-            <h1 className="text-2xl font-bold">Cài đặt</h1>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Cài đặt hệ thống</CardTitle>
-                    <CardDescription>
-                        Quản lý các thông số và cấu hình cho hệ thống chấm công.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="company-name">Tên công ty</Label>
-                        <Input id="company-name" placeholder="Tên công ty của bạn" />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="recognition-threshold">Ngưỡng nhận diện khuôn mặt</Label>
-                        <Input id="recognition-threshold" type="number" placeholder="0.85" step="0.01" />
-                        <p className="text-sm text-muted-foreground">
-                            Giá trị từ 0 đến 1. Giá trị càng cao, yêu cầu nhận diện càng chính xác.
-                        </p>
-                    </div>
-                </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Button>Lưu thay đổi</Button>
-                </CardFooter>
-            </Card>
-        </div>
-    );
+  return (
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Thay đổi mật khẩu Admin</h1>
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md dark:bg-gray-800">
+        {/* This form posts directly to our new API route */}
+        <form action="/api/admin/change-password" method="POST">
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="currentPassword">
+              Mật khẩu hiện tại
+            </label>
+            <input
+              id="currentPassword"
+              name="currentPassword"
+              type="password"
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:ring-blue-200"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="newPassword">
+              Mật khẩu mới
+            </label>
+            <input
+              id="newPassword"
+              name="newPassword"
+              type="password"
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:ring-blue-200"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="confirmPassword">
+              Xác nhận mật khẩu mới
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring focus:ring-blue-200"
+              required
+            />
+          </div>
+          <FormMessage />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+          >
+            Đổi mật khẩu
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

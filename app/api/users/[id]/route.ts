@@ -4,7 +4,8 @@ import { getUserById, updateUser, deleteUser } from '@/lib/database';
 import { z } from 'zod';
 
 // GET handler for a single user
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     try {
         const id = parseInt(params.id, 10);
         if (isNaN(id)) {
@@ -32,7 +33,8 @@ const updateUserSchema = z.object({
 
 
 // PATCH handler for updating a user
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     try {
         const id = parseInt(params.id, 10);
         if (isNaN(id)) {
@@ -81,7 +83,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
 
 // DELETE handler for removing a user
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     try {
         const id = parseInt(params.id, 10);
         if (isNaN(id)) {
