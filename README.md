@@ -1,196 +1,122 @@
-# Hệ Thống Chấm Công Face Recognition
 
-Hệ thống chấm công hiện đại sử dụng nhận diện khuôn mặt và QR code với giao diện riêng biệt cho admin và nhân viên.
+<div align="center">
+  <img src="./public/logo.svg" alt="logo" width="100"/>
+  <h1>Hệ Thống Chấm Công Nhận Diện Khuôn Mặt</h1>
+  <p>
+    Một giải pháp chấm công hiện đại, ứng dụng AI để nhận diện khuôn mặt và quản lý nhân sự một cách hiệu quả, được xây dựng trên nền tảng Next.js.
+  </p>
+  
+  <p>
+    <a href="https://github.com/thaolv-03/fancy-media-attendance-system/blob/main/LICENSE">
+      <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
+    </a>
+    <a href="#">
+      <img alt="Next.js" src="https://img.shields.io/badge/Next.js-14-black?logo=next.js"/>
+    </a>
+     <a href="#">
+      <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript"/>
+    </a>
+    <a href="#">
+      <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-green?logo=tailwind-css"/>
+    </a>
+  </p>
+</div>
 
-## Tính Năng
+## ✨ Tính Năng Nổi Bật
 
-- **Nhận diện khuôn mặt**: Sử dụng WebRTC và model ONNX anti-spoofing
-- **QR Code fallback**: Tự động chuyển sang QR khi face ID thất bại
-- **Giao diện Admin**: Quản lý nhân viên, xem báo cáo, thống kê
-- **Giao diện Nhân viên**: Đơn giản, tập trung vào chấm công
-- **Auto-save**: Tự động lưu và dừng camera khi chấm công thành công
-- **Anti-spoofing**: Phát hiện khuôn mặt giả bằng model AI
+-   **👤 Giao diện Admin:**
+    -   📊 **Dashboard:** Theo dõi và quản lý toàn bộ hệ thống.
+    -   👥 **Quản lý nhân viên:** Thêm, sửa, xóa thông tin và hình ảnh nhân viên.
+    -   🤖 **Tự động tạo QR Code:** Mỗi nhân viên được cấp một mã QR duy nhất.
+    -   📅 **Lịch sử chấm công:** Xem lại và lọc lịch sử điểm danh theo ngày.
+    -   📈 **Thống kê chuyên cần:** Phân tích và đánh giá tỷ lệ đi làm của nhân viên.
+    -   📄 **Xuất báo cáo:** Xuất dữ liệu chấm công ra file Excel.
+    -   🔒 **Bảo mật:** Thay đổi mật khẩu tài khoản quản trị.
+-   **👨‍💼 Giao diện Nhân viên:**
+    -   📷 **Chấm công bằng AI:** Sử dụng camera để nhận diện khuôn mặt nhanh chóng và chính xác.
+    -   🛡️ **Chống giả mạo (Anti-Spoofing):** Model AI tích hợp giúp phát hiện các trường hợp sử dụng ảnh hoặc video để gian lận.
+-   **⚡ Hiệu suất:**
+    -   **Tự động dừng camera:** Camera sẽ tự động tắt sau khi chấm công thành công để tiết kiệm tài nguyên.
 
-## Yêu Cầu Hệ Thống
+## 📸 Hình Ảnh Demo
 
-- Node.js 18+ 
-- npm hoặc yarn
-- Camera/webcam cho face recognition
-- Trình duyệt hỗ trợ WebRTC (Chrome, Firefox, Safari)
+<details>
+<summary>Nhấn để xem ảnh chụp màn hình</summary>
+<br/>
+<p align="center">
+  <em>(Thêm ảnh chụp màn hình trang Admin Dashboard ở đây)</em>
+  <br/>
+  <strong>Trang quản trị của Admin</strong>
+</p>
+<p align="center">
+  <em>(Thêm ảnh chụp màn hình trang Chấm công của nhân viên ở đây)</em>
+  <br/>
+  <strong>Giao diện chấm công của nhân viên</strong>
+</p>
+</details>
 
-## Cài Đặt
+## 🚀 Công Nghệ Sử Dụng
 
-### 1. Clone và cài đặt dependencies
+| Hạng mục        | Công nghệ                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
+| **Framework**   | [Next.js](https://nextjs.org/) (App Router), [React](https://reactjs.org/)                              |
+| **Ngôn ngữ**    | [TypeScript](https://www.typescriptlang.org/)                                                           |
+| **Styling**     | [Tailwind CSS](https://tailwindcss.com/), [Shadcn/ui](https://ui.shadcn.com/)                            |
+| **Database**    | [SQLite](https://www.sqlite.org/index.html) (sử dụng `better-sqlite3`)                                  |
+| **Nhận diện AI**| [ONNX Runtime Web](https://onnxruntime.ai/docs/api/js/)                                                   |
+| **Session**     | [Iron Session](https://github.com/vvo/iron-session)                                                     |
+| **Bảo mật**     | [Bcrypt.js](https://github.com/kelektiv/bcrypt.js)                                                      |
 
-\`\`\`bash
-# Clone project (nếu từ GitHub)
-git clone <repository-url>
-cd attendance-system
+## 🛠️ Cài Đặt và Khởi Chạy
 
-# Cài đặt dependencies
+### 1. Yêu Cầu
+-   Node.js 20+
+-   `npm` hoặc `yarn`
+-   Webcam/Camera
+
+### 2. Cài Đặt
+```bash
+# Clone repository (nếu bạn chưa có)
+git clone https://github.com/thaolv-03/fancy-media-attendance-system.git
+
+# Di chuyển vào thư mục dự án
+cd fancy-media-attendance-system
+
+# Cài đặt các dependencies
 npm install
-# hoặc
-yarn install
-\`\`\`
+```
 
-### 2. Cấu hình Database
+### 3. Khởi tạo Database
 
-Database SQLite sẽ được tự động tạo khi chạy ứng dụng lần đầu.
+Chạy script sau để tạo file `attendance.db` và tài khoản admin mặc định.
 
-### 3. Chạy ứng dụng Development
+```bash
+npm run db:init
+```
 
-\`\`\`bash
+> **Tài khoản Admin mặc định:**
+> -   **Username:** `admin`
+> -   **Password:** `admin`
+>
+> ⚠️ **Quan trọng:** Vui lòng đổi mật khẩu ngay sau khi đăng nhập lần đầu tại trang `/admin/settings`.
+
+
+### 4. Chạy ứng dụng
+```bash
 npm run dev
-# hoặc
-yarn dev
-\`\`\`
+```
+🎉 Ứng dụng sẽ chạy tại địa chỉ: [http://localhost:3000](http://localhost:3000)
 
-Ứng dụng sẽ chạy tại: `http://localhost:3000`
+## 🤝 Đóng Góp
 
-### 4. Truy cập ứng dụng
+Mọi sự đóng góp đều được chào đón! Nếu bạn có ý tưởng để cải thiện dự án, vui lòng fork repository và tạo một Pull Request.
 
-- **Trang chủ**: `http://localhost:3000` - Chọn vai trò Admin hoặc Employee
-- **Admin Dashboard**: `http://localhost:3000/admin` - Quản lý hệ thống
-- **Employee Interface**: `http://localhost:3000/employee` - Chấm công
+1.  **Fork** dự án.
+2.  Tạo một branch mới (`git checkout -b feature/AmazingFeature`).
+3.  **Commit** những thay đổi của bạn (`git commit -m 'Add some AmazingFeature'`).
+4.  **Push** lên branch (`git push origin feature/AmazingFeature`).
+5.  Mở một **Pull Request**.
 
-## Hướng Dẫn Sử Dụng
+## 📄 Bản Quyền
 
-### Admin Dashboard
-
-1. **Thêm nhân viên mới**:
-   - Vào Admin Dashboard → Employees → Add Employee
-   - Nhập thông tin và chụp ảnh khuôn mặt
-   - Hệ thống sẽ tự động tạo QR code
-
-2. **Xem báo cáo chấm công**:
-   - Vào Admin Dashboard → Attendance
-   - Xem danh sách chấm công theo ngày
-   - Xuất báo cáo Excel
-
-3. **Quản lý nhân viên**:
-   - Xem danh sách nhân viên
-   - Tìm kiếm và lọc
-   - Cập nhật thông tin
-
-### Employee Interface
-
-1. **Chấm công bằng Face ID**:
-   - Vào Employee Interface
-   - Đặt khuôn mặt vào khung camera
-   - Hệ thống tự động nhận diện và lưu
-
-2. **Chấm công bằng QR Code**:
-   - Chỉ hiện khi Face ID thất bại 3 lần
-   - Quét QR code hoặc upload ảnh QR
-   - Hệ thống tự động xử lý
-
-## Triển Khai Production
-
-### 1. Triển khai lên Vercel (Khuyến nghị)
-
-\`\`\`bash
-# Cài đặt Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Hoặc kết nối với GitHub và auto-deploy
-\`\`\`
-
-### 2. Triển khai lên VPS/Server
-
-\`\`\`bash
-# Build ứng dụng
-npm run build
-
-# Chạy production
-npm start
-\`\`\`
-
-### 3. Cấu hình Nginx (nếu cần)
-
-\`\`\`nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-\`\`\`
-
-## Biến Môi Trường
-
-Tạo file `.env.local` (không bắt buộc, có giá trị mặc định):
-
-\`\`\`env
-# Database
-DATABASE_URL=./attendance.db
-
-# Face Recognition Settings
-FACE_SIMILARITY_THRESHOLD=0.6
-ANTI_SPOOFING_THRESHOLD=0.5
-
-# App Settings
-NEXT_PUBLIC_APP_NAME="Hệ Thống Chấm Công"
-\`\`\`
-
-## Cấu Trúc Thư Mục
-
-\`\`\`
-├── app/                    # Next.js App Router
-│   ├── admin/             # Admin dashboard pages
-│   ├── employee/          # Employee interface
-│   └── api/               # API routes
-├── components/            # React components
-│   ├── admin/            # Admin components
-│   ├── employee/         # Employee components
-│   └── ui/               # Shared UI components
-├── lib/                   # Utilities and database
-├── public/               # Static assets
-└── scripts/              # Database scripts
-\`\`\`
-
-## Troubleshooting
-
-### Camera không hoạt động
-- Kiểm tra quyền camera trong trình duyệt
-- Đảm bảo sử dụng HTTPS trong production
-- Thử trình duyệt khác
-
-### Face recognition không chính xác
-- Đảm bảo ánh sáng đủ
-- Khuôn mặt nhìn thẳng camera
-- Kiểm tra threshold trong settings
-
-### Database lỗi
-- Xóa file `attendance.db` để reset
-- Kiểm tra quyền ghi file
-- Restart ứng dụng
-
-## Hỗ Trợ
-
-Nếu gặp vấn đề, vui lòng:
-1. Kiểm tra console browser (F12)
-2. Xem logs server
-3. Đảm bảo tất cả dependencies đã được cài đặt
-
-## Cập Nhật
-
-\`\`\`bash
-# Cập nhật dependencies
-npm update
-
-# Rebuild sau khi cập nhật
-npm run build
-"# fancy-media-attendance-system" 
+Dự án này được cấp phép theo Giấy phép MIT. Xem chi tiết tại file [LICENSE](https://github.com/thaolv-03/fancy-media-attendance-system/blob/main/LICENSE).
