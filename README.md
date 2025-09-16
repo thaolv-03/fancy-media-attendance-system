@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="./public/logo.svg" alt="logo" width="100"/>
   <h1>Hệ Thống Chấm Công Nhận Diện Khuôn Mặt</h1>
@@ -63,9 +62,9 @@
 | **Ngôn ngữ**    | [TypeScript](https://www.typescriptlang.org/)                                                           |
 | **Styling**     | [Tailwind CSS](https://tailwindcss.com/), [Shadcn/ui](https://ui.shadcn.com/)                            |
 | **Database**    | [SQLite](https://www.sqlite.org/index.html) (sử dụng `better-sqlite3`)                                  |
-| **Nhận diện AI**| [ONNX Runtime Web](https://onnxruntime.ai/docs/api/js/)                                                   |
+| **Nhận diện AI**  |• **Nhận diện:** Model [Facenet512](https://github.com/serengil/deepface)<br/>• **Chống giả mạo:** Model từ [Face-AntiSpoofing](https://github.com/hairymax/Face-AntiSpoofing) |
 | **Session**     | [Iron Session](https://github.com/vvo/iron-session)                                                     |
-| **Bảo mật**     | [Bcrypt.js](https://github.com/kelektiv/bcrypt.js)                                                      |
+| **Bảo mật**     | [Bcrypt.js](https://www.npmjs.com/package/bcryptjs)                                                      |
 
 ## 🛠️ Cài Đặt và Khởi Chạy
 
