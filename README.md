@@ -23,19 +23,19 @@
 
 ## ✨ Tính Năng Nổi Bật
 
--   **👤 Giao diện Admin:**
-    -   📊 **Dashboard:** Theo dõi và quản lý toàn bộ hệ thống.
-    -   👥 **Quản lý nhân viên:** Thêm, sửa, xóa thông tin và hình ảnh nhân viên.
-    -   🤖 **Tự động tạo QR Code:** Mỗi nhân viên được cấp một mã QR duy nhất.
-    -   📅 **Lịch sử chấm công:** Xem lại và lọc lịch sử điểm danh theo ngày.
-    -   📈 **Thống kê chuyên cần:** Phân tích và đánh giá tỷ lệ đi làm của nhân viên.
-    -   📄 **Xuất báo cáo:** Xuất dữ liệu chấm công ra file Excel.
-    -   🔒 **Bảo mật:** Thay đổi mật khẩu tài khoản quản trị.
--   **👨‍💼 Giao diện Nhân viên:**
-    -   📷 **Chấm công bằng AI:** Sử dụng camera để nhận diện khuôn mặt nhanh chóng và chính xác.
-    -   🛡️ **Chống giả mạo (Anti-Spoofing):** Model AI tích hợp giúp phát hiện các trường hợp sử dụng ảnh hoặc video để gian lận.
--   **⚡ Hiệu suất:**
-    -   **Tự động dừng camera:** Camera sẽ tự động tắt sau khi chấm công thành công để tiết kiệm tài nguyên.
+- **👤 Giao diện Admin:**
+  - 📊 **Dashboard:** Theo dõi và quản lý toàn bộ hệ thống.
+  - 👥 **Quản lý nhân viên:** Thêm, sửa, xóa thông tin và hình ảnh nhân viên.
+  - 🤖 **Tự động tạo QR Code:** Mỗi nhân viên được cấp một mã QR duy nhất.
+  - 📅 **Lịch sử chấm công:** Xem lại và lọc lịch sử điểm danh theo ngày.
+  - 📈 **Thống kê chuyên cần:** Phân tích và đánh giá tỷ lệ đi làm của nhân viên.
+  - 📄 **Xuất báo cáo:** Xuất dữ liệu chấm công ra file Excel.
+  - 🔒 **Bảo mật:** Thay đổi mật khẩu tài khoản quản trị.
+- **👨‍💼 Giao diện Nhân viên:**
+  - 📷 **Chấm công bằng AI:** Sử dụng camera để nhận diện khuôn mặt nhanh chóng và chính xác.
+  - 🛡️ **Chống giả mạo (Anti-Spoofing):** Model AI tích hợp giúp phát hiện các trường hợp sử dụng ảnh hoặc video để gian lận.
+- **⚡ Hiệu suất:**
+  - **Tự động dừng camera:** Camera sẽ tự động tắt sau khi chấm công thành công để tiết kiệm tài nguyên.
 
 ## 📸 Hình Ảnh Demo
 
@@ -69,11 +69,13 @@
 ## 🛠️ Cài Đặt và Khởi Chạy
 
 ### 1. Yêu Cầu
--   Node.js 20+
--   `npm` hoặc `yarn`
--   Webcam/Camera
+
+- Node.js 20+
+- `npm` hoặc `yarn`
+- Webcam/Camera
 
 ### 2. Cài Đặt
+
 ```bash
 # Clone repository (nếu bạn chưa có)
 git clone https://github.com/thaolv-03/fancy-media-attendance-system.git
@@ -94,27 +96,29 @@ npm run db:init
 ```
 
 > **Tài khoản Admin mặc định:**
-> -   **Username:** `admin`
-> -   **Password:** `admin`
+>
+> - **Username:** `admin`
+> - **Password:** `admin`
 >
 > ⚠️ **Quan trọng:** Vui lòng đổi mật khẩu ngay sau khi đăng nhập lần đầu tại trang `/admin/settings`.
 
-
 ### 4. Chạy ứng dụng
+
 ```bash
 npm run dev
 ```
+
 🎉 Ứng dụng sẽ chạy tại địa chỉ: [http://localhost:3000](http://localhost:3000)
 
 ## 🤝 Đóng Góp
 
 Mọi sự đóng góp đều được chào đón! Nếu bạn có ý tưởng để cải thiện dự án, vui lòng fork repository và tạo một Pull Request.
 
-1.  **Fork** dự án.
-2.  Tạo một branch mới (`git checkout -b feature/AmazingFeature`).
-3.  **Commit** những thay đổi của bạn (`git commit -m 'Add some AmazingFeature'`).
-4.  **Push** lên branch (`git push origin feature/AmazingFeature`).
-5.  Mở một **Pull Request**.
+1. **Fork** dự án.
+2. Tạo một branch mới (`git checkout -b feature/AmazingFeature`).
+3. **Commit** những thay đổi của bạn (`git commit -m 'Add some AmazingFeature'`).
+4. **Push** lên branch (`git push origin feature/AmazingFeature`).
+5. Mở một **Pull Request**.
 
 ## 📄 Bản Quyền
 
