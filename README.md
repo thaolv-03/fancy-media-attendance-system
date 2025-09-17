@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/logo.svg" alt="logo" width="100"/>
+  <img src="./public/fancy-media-logo.png" alt="logo" width="100"/>
   <h1>Hệ Thống Chấm Công Nhận Diện Khuôn Mặt</h1>
   <p>
     Một giải pháp chấm công hiện đại, ứng dụng AI để nhận diện khuôn mặt và quản lý nhân sự một cách hiệu quả, được xây dựng trên nền tảng Next.js.
