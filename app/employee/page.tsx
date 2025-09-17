@@ -141,49 +141,122 @@ export default function EmployeePage() {
   // --- UI Rendering ---
 
   const renderStatus = () => {
-     let icon, text, color;
+    let icon, text, colorClass, iconColor;
     switch (status) {
-      case "success": icon = <CheckCircle className="h-6 w-6 text-green-600" />; text = "Thành công"; color = "bg-green-100 text-green-800"; break;
-      case "failed_terminal": icon = <XCircle className="h-6 w-6 text-destructive" />; text = "Thất bại"; color = "bg-destructive/10 text-destructive"; break;
-      case "failed_retry": icon = <XCircle className="h-6 w-6 text-destructive" />; text = `Thất bại (Lần ${faceRecognitionAttempts}/3)`; color = "bg-destructive/10 text-destructive"; break;
-      case "recognizing": case "countdown": icon = <Camera className="h-6 w-6 text-primary animate-pulse" />; text = "Đang xử lý..."; color = "bg-primary/10 text-primary"; break;
-      default: icon = <Clock className="h-6 w-6 text-muted-foreground" />; text = "Sẵn sàng"; color = "bg-muted text-muted-foreground"; break;
+      case "success":
+        icon = CheckCircle;
+        text = "Thành công";
+        colorClass = "bg-green-500/10 text-green-700 border-green-500/20";
+        iconColor = "text-green-600";
+        break;
+      case "failed_terminal":
+        icon = XCircle;
+        text = "Thất bại";
+        colorClass = "bg-red-500/10 text-red-700 border-red-500/20";
+        iconColor = "text-red-600";
+        break;
+      case "failed_retry":
+        icon = XCircle;
+        text = `Thất bại (Lần ${faceRecognitionAttempts}/3)`;
+        colorClass = "bg-red-500/10 text-red-700 border-red-500/20";
+        iconColor = "text-red-600";
+        break;
+      case "recognizing":
+      case "countdown":
+        icon = Camera;
+        text = "Đang xử lý...";
+        colorClass = "bg-blue-500/10 text-blue-700 border-blue-500/20";
+        iconColor = "text-blue-600 animate-pulse";
+        break;
+      default:
+        icon = Clock;
+        text = "Sẵn sàng";
+        colorClass = "bg-gray-500/10 text-gray-700 border-gray-500/20";
+        iconColor = "text-gray-600";
+        break;
     }
+    const IconComponent = icon;
     return (
-      <div className="text-center space-y-4 p-6">
-        <div className="flex items-center justify-center gap-3"><Badge className={`${color} px-4 py-2`}>{icon}{text}</Badge></div>
-        {finalUser && <div className="font-bold text-lg flex items-center justify-center gap-2 pt-2"><User/> {finalUser}</div>}
-        {message && <p className="text-sm text-muted-foreground pt-2">{message}</p>}
-        {(status === "success" || status === "failed_terminal") && <Button onClick={resetForNextUser} className="mt-4">Chấm công cho người tiếp theo</Button>}
+      <div className="flex flex-col items-center justify-center space-y-4 p-6">
+        <Badge 
+          variant="outline"
+          className={`px-6 py-3 text-lg font-medium rounded-full border ${colorClass} flex items-center gap-2 transition-all duration-300 hover:shadow-md`}
+        >
+          <IconComponent className={`h-5 w-5 ${iconColor}`} />
+          {text}
+        </Badge>
+        {finalUser && (
+          <div className="flex items-center gap-2 text-xl font-semibold text-gray-800">
+            <User className="h-5 w-5 text-blue-600" />
+            {finalUser}
+          </div>
+        )}
+        {message && <p className="text-sm text-gray-600 max-w-md text-center">{message}</p>}
+        {status === "idle" && (
+          <Button 
+            onClick={handleStart} 
+            className="mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+          >
+            Bắt đầu chấm công
+          </Button>
+        )}
+        {(status === "success" || status === "failed_terminal") && (
+          <Button 
+            onClick={resetForNextUser} 
+            className="mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+          >
+            Chấm công cho người tiếp theo
+          </Button>
+        )}
       </div>
     );
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="text-center"><h1 className="text-4xl font-bold">FANCY MEDIA</h1></div>
-        <div className="text-center"><h1 className="text-3xl font-bold">Chấm công bằng khuôn mặt</h1></div>
-        <Card>{renderStatus()}</Card>
-        <Card>
-          <CardContent className="p-6">
-            {showQRScanner ? (
-              <div className="text-center space-y-4">
-                  <QrCode className="h-16 w-16 mx-auto text-primary"/>
-                  <p>Chế độ QR sẽ được hỗ trợ sau.</p>
-                  <Button onClick={resetForNextUser}>Quay lại</Button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-4xl space-y-8">
+        <header className="text-center space-y-3 animate-fade-in-down">
+          <img 
+            src="/fancy-media-logo.svg" 
+            alt="Fancy Media Logo" 
+            className="h-8 md:h-12 mx-auto object-contain"
+          />
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">Chấm công bằng khuôn mặt</h2>
+        </header>
+        
+        <Card className="overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-blue-100/50 transition-all duration-500 hover:shadow-3xl">
+          <CardContent className="p-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-6 flex items-center justify-center bg-gradient-to-b from-white to-blue-50/50">
+                {showQRScanner ? (
+                  <div className="text-center space-y-6 w-full max-w-sm">
+                    <QrCode className="h-24 w-24 mx-auto text-indigo-600 animate-bounce" />
+                    <p className="text-lg font-medium text-gray-700">Chế độ QR sẽ được hỗ trợ sau.</p>
+                    <Button 
+                      onClick={resetForNextUser}
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                    >
+                      Quay lại
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-inner bg-gray-100">
+                    <AttendanceCamera
+                      isActive={cameraShouldBeActive}
+                      status={status}
+                      message={message}
+                      countdown={countdown}
+                      onCameraReady={handleCameraReady}
+                      onCapture={handleRecognition}
+                      onStart={handleStart}
+                    />
+                  </div>
+                )}
               </div>
-            ) : (
-              <AttendanceCamera
-                isActive={cameraShouldBeActive}
-                status={status}
-                message={message}
-                countdown={countdown}
-                onCameraReady={handleCameraReady}
-                onCapture={handleRecognition}
-                onStart={handleStart}
-              />
-            )}
+              <div className="p-6 flex items-center justify-center bg-gradient-to-b from-blue-50/50 to-white">
+                {renderStatus()}
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
