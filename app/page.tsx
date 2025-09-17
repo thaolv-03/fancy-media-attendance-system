@@ -1,86 +1,102 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { Users, Clock, Shield } from "lucide-react"
 
-export default function HomePage() {
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import Image from "next/image"
+import { Clock, Shield, Users, ArrowRight } from "lucide-react"
+
+// Component cho các thẻ tính năng
+const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
+  <div className="flex items-start space-x-4">
+    <div className="flex-shrink-0">
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        {icon}
+      </div>
+    </div>
+    <div>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <p className="mt-1 text-gray-600 dark:text-gray-400">{description}</p>
+    </div>
+  </div>
+);
+
+export default function ModernHomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-card-foreground">FANCY MEDIA - Hệ thống chấm công</h1>
-            <div className="flex gap-2">
-              <Button asChild variant="outline">
-                <Link href="/employee">Nhân viên chấm công</Link>
+    <div className="relative min-h-screen w-full overflow-hidden bg-white dark:bg-gray-950">
+      {/* Họa tiết nền */}
+      <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#0c2d48,transparent)]"></div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 min-h-screen">
+        {/* Cột Trái: Hình ảnh và trang trí */}
+        <div className="relative hidden lg:flex items-center justify-center bg-primary/5 dark:bg-primary/10 p-8">
+            <Image 
+              src="/face_recognition.svg"
+              alt="Facial Recognition Illustration"
+              width={600}
+              height={600}
+              className="object-contain rounded-lg"
+              priority
+            />
+        </div>
+
+        {/* Cột Phải: Nội dung chính */}
+        <div className="flex flex-col justify-center p-8 lg:p-12">
+          <div className="mx-auto w-full max-w-md">
+            {/* Logo */}
+            <div className="mb-8 flex justify-start">
+              <Image 
+                src="/fancy-media-logo.svg"
+                alt="Fancy Media Logo"
+                width={220}
+                height={50}
+                className="dark:invert"
+              />
+            </div>
+
+            {/* Hero Section */}
+            <h1 className="text-4xl leading-14 font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
+              Hệ thống chấm công<span className="text-primary"> thông minh</span>
+            </h1>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+              Ứng dụng công nghệ AI nhận diện khuôn mặt để quản lý thời gian làm việc chính xác, an toàn và hiệu quả.
+            </p>
+
+            {/* Các tính năng */}
+            <div className="mt-10 space-y-8">
+              <FeatureCard 
+                icon={<Clock size={24}/>}
+                title="Chấm công nhanh chóng"
+                description="Nhận diện khuôn mặt chỉ trong vài giây, tự động ghi nhận và lưu trữ kết quả."
+              />
+              <FeatureCard 
+                icon={<Shield size={24}/>}
+                title="Bảo mật tối đa"
+                description="Công nghệ Anti-Spoofing ngăn chặn mọi hành vi gian lận bằng hình ảnh hoặc video."
+              />
+               <FeatureCard 
+                icon={<Users size={24}/>}
+                title="Quản lý trực quan"
+                description="Dashboard cung cấp báo cáo chi tiết, thống kê chuyên cần và quản lý nhân viên dễ dàng."
+              />
+            </div>
+
+            {/* Nút CTA */}
+            <div className="mt-12 flex flex-col sm:flex-row gap-4">
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <Link href="/employee">
+                  Chấm công ngay
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-              <Button asChild>
-                <Link href="/admin">Admin - Quản lý hệ thống</Link>
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                <Link href="/admin">Đến Trang quản trị</Link>
               </Button>
             </div>
           </div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Chấm công thông minh với Face ID</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Hệ thống chấm công hiện đại sử dụng công nghệ nhận diện khuôn mặt và QR code
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
-                <Clock className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <CardTitle className="text-card-foreground">Chấm công nhanh</CardTitle>
-              <CardDescription>Nhận diện khuôn mặt trong vài giây, tự động lưu kết quả</CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-secondary-foreground" />
-              </div>
-              <CardTitle className="text-card-foreground">Bảo mật cao</CardTitle>
-              <CardDescription>Công nghệ Face Anti-spoofing ngăn chặn gian lận bằng ảnh giả</CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4">
-                <Users className="h-6 w-6 text-accent-foreground" />
-              </div>
-              <CardTitle className="text-card-foreground">Quản lý dễ dàng</CardTitle>
-              <CardDescription>Dashboard Admin với báo cáo chi tiết và thống kê</CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-
-        <div className="text-center">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground">
-              <Link href="/employee">
-                <Clock className="h-5 w-5 mr-2" />
-                Chấm công ngay
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/admin">
-                <Shield className="h-5 w-5 mr-2" />
-                Quản lý hệ thống
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </main>
+      </div>
     </div>
-  )
+  );
 }

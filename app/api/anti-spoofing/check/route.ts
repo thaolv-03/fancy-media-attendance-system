@@ -29,7 +29,6 @@ export async function POST(request: NextRequest) {
     console.log("[Anti-Spoofing] Detection result:", {
       isLive: antiSpoofingResult.isLive,
       confidence: antiSpoofingResult.confidence,
-      modelScore: antiSpoofingResult.modelScore,
       processingTime: antiSpoofingResult.details.processingTime
     })
 
@@ -37,14 +36,11 @@ export async function POST(request: NextRequest) {
       success: true,
       is_live: antiSpoofingResult.isLive,
       confidence: antiSpoofingResult.confidence,
-      model_score: antiSpoofingResult.modelScore,
       threshold: antiSpoofingResult.details.threshold,
       reasons: antiSpoofingResult.reasons,
       details: {
-        modelScore: antiSpoofingResult.modelScore,
         threshold: antiSpoofingResult.details.threshold,
         processingTime: antiSpoofingResult.details.processingTime,
-        faceDetected: antiSpoofingResult.details.faceDetected,
       },
       message: antiSpoofingResult.isLive 
         ? "Khuôn mặt thật được xác nhận" 
