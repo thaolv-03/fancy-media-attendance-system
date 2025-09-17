@@ -62,7 +62,7 @@
 | **Ngôn ngữ**    | [TypeScript](https://www.typescriptlang.org/)                                                           |
 | **Styling**     | [Tailwind CSS](https://tailwindcss.com/), [Shadcn/ui](https://ui.shadcn.com/)                            |
 | **Database**    | [SQLite](https://www.sqlite.org/index.html) (sử dụng `better-sqlite3`)                                  |
-| **Nhận diện AI**  |• **Nhận diện:** Model [Facenet512](https://github.com/serengil/deepface)<br/>• **Chống giả mạo:** Model từ [Face-AntiSpoofing](https://github.com/hairymax/Face-AntiSpoofing) |
+| **Nhận diện AI**  |• **Runtime:** [ONNX Runtime Web](https://onnxruntime.ai/docs/api/js/)<br/>• **Nhận diện:** Model [Facenet512](https://github.com/serengil/deepface)<br/>• **Chống giả mạo:** Model từ [Face-AntiSpoofing](https://github.com/hairymax/Face-AntiSpoofing) |
 | **Session**     | [Iron Session](https://github.com/vvo/iron-session)                                                     |
 | **Bảo mật**     | [Bcrypt.js](https://www.npmjs.com/package/bcryptjs)                                                      |
 
@@ -109,6 +109,34 @@ npm run dev
 ```
 
 🎉 Ứng dụng sẽ chạy tại địa chỉ: [http://localhost:3000](http://localhost:3000)
+
+## 🏗️ Kiến Trúc Hệ Thống
+
+### Sơ đồ Database
+
+Dự án sử dụng SQLite với 3 bảng chính:
+
+-   `admins`: Lưu trữ thông tin tài khoản quản trị (username, password đã mã hóa).
+-   `employees`: Lưu trữ thông tin nhân viên (tên, chức vụ, email) và vector khuôn mặt (face_embedding) dùng cho việc nhận diện.
+-   `attendance`: Ghi lại lịch sử các lần chấm công (thời gian, id nhân viên).
+
+### API Endpoints
+
+Hệ thống cung cấp các API endpoint theo chuẩn RESTful:
+
+| Method | Endpoint                    | Chức năng                                        |
+| ------ | --------------------------- | ------------------------------------------------ |
+| `POST` | `/api/auth/login`           | Đăng nhập tài khoản admin.                       |
+| `POST` | `/api/auth/logout`          | Đăng xuất tài khoản admin.                       |
+| `PUT`  | `/api/admin/change-password`| Thay đổi mật khẩu admin.                          |
+| `GET`  | `/api/employees`            | Lấy danh sách tất cả nhân viên.                  |
+| `POST` | `/api/employees`            | Tạo một nhân viên mới.                           |
+| `GET`  | `/api/employees/[id]`       | Lấy thông tin chi tiết của một nhân viên.        |
+| `PUT`  | `/api/employees/[id]`       | Cập nhật thông tin của một nhân viên.            |
+| `DELETE`| `/api/employees/[id]`      | Xóa một nhân viên.                               |
+| `GET`  | `/api/attendance`           | Lấy lịch sử chấm công trong ngày.                |
+| `POST` | `/api/attendance/record`    | Ghi nhận một lượt chấm công bằng nhận diện khuôn mặt. |
+
 
 ## 🤝 Đóng Góp
 
