@@ -45,7 +45,7 @@
   --secondary-foreground: var(--admin-secondary-foreground);
   --muted: #f8fafc;
   --muted-foreground: #475569;
-  --accent: #ec4899;
+  --accent: rgb(3, 175, 255);
   --accent-foreground: #ffffff;
   --destructive: #be123c;
   --destructive-foreground: #ffffff;
