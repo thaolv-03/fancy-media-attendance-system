@@ -45,7 +45,7 @@
   --secondary-foreground: var(--admin-secondary-foreground);
   --muted: #f8fafc;
   --muted-foreground: #475569;
-  --accent: rgb(3, 175, 255);
+  --accent: #164e63;
   --accent-foreground: #ffffff;
   --destructive: #be123c;
   --destructive-foreground: #ffffff;
@@ -169,6 +169,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }

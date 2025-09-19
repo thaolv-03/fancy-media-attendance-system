@@ -28,13 +28,13 @@ export default function ModernHomePage() {
                       </Link>
                   </div>
                   <nav className="hidden md:flex items-center space-x-6">
-                      <Link href="#features" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Tính năng</Link>
-                      <Link href="#how-it-works" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Cách hoạt động</Link>
-                      <Link href="/admin" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Quản trị</Link>
+                      <Link href="#features" className="font-bold text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Tính năng</Link>
+                      <Link href="#how-it-works" className="font-bold text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Cách hoạt động</Link>
+                      <Link href="/admin" className="font-bold text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">Quản trị</Link>
                   </nav>
                   <div className="flex items-center">
                       <Button asChild>
-                          <Link href="/employee">Chấm công</Link>
+                          <Link href="/employee">Đến trang chấm công</Link>
                       </Button>
                   </div>
               </div>
@@ -52,10 +52,10 @@ export default function ModernHomePage() {
           </p>
           <div className="mt-8 flex justify-center gap-4">
               <Button asChild size="lg">
-                  <Link href="/employee">Bắt đầu chấm công <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <Link href="/employee">Bắt đầu chấm công<ArrowRight className="ml-0.5 h-5 w-5" /></Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                  <Link href="/admin">Trang quản trị</Link>
+                  <Link href="/admin">Đến trang quản trị</Link>
               </Button>
           </div>
           <div className="mt-12 relative">
@@ -122,17 +122,17 @@ export default function ModernHomePage() {
             <p className="mt-3 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Quy trình 3 bước đơn giản để bắt đầu quản lý chấm công hiệu quả.</p>
             <div className="mt-12 grid md:grid-cols-3 gap-8 text-left">
                 <div className="relative p-8 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
-                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-100 dark:text-gray-800">01</div>
+                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-200 dark:text-gray-800">01</div>
                     <h3 className="font-semibold text-lg mt-8">Đăng ký</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Quản trị viên thêm nhân viên mới và đăng ký khuôn mặt của họ bằng webcam hoặc tải lên ảnh.</p>
                 </div>
                 <div className="relative p-8 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
-                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-100 dark:text-gray-800">02</div>
+                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-200 dark:text-gray-800">02</div>
                     <h3 className="font-semibold text-lg mt-8">Chấm công</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Nhân viên chỉ cần nhìn vào camera để hệ thống nhận diện và ghi lại thời gian vào/ra.</p>
                 </div>
                 <div className="relative p-8 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
-                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-100 dark:text-gray-800">03</div>
+                    <div className="absolute top-4 left-4 text-4xl font-black text-gray-200 dark:text-gray-800">03</div>
                     <h3 className="font-semibold text-lg mt-8">Quản lý</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Quản trị viên xem báo cáo, theo dõi dữ liệu chấm công và quản lý thông tin nhân viên.</p>
                 </div>
