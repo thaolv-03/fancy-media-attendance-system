@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
 import React from "react"
 
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-// Removed unused UI component imports
-import { Camera, Upload, User, CheckCircle, AlertCircle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Camera, Upload, User, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function AddEmployeePage() {
@@ -40,7 +41,6 @@ export default function AddEmployeePage() {
   }
 
   const handleCameraCapture = (imageData: string) => {
-    // Convert data URL to File
     fetch(imageData)
       .then((res) => res.blob())
       .then((blob) => {
@@ -69,7 +69,6 @@ export default function AddEmployeePage() {
       const data = await response.json()
 
       if (data.success) {
-        // Generate QR code
         const qrResponse = await fetch("/api/qr/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,7 +86,6 @@ export default function AddEmployeePage() {
           qrCode: qrData.success ? qrData.qrCode : undefined,
         })
 
-        // Reset form
         setName("")
         setSelectedImage(null)
         setImagePreview(null)
@@ -116,122 +114,114 @@ export default function AddEmployeePage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Thêm nhân viên mới</h1>
+          <h1 className="text-3xl font-bold">Thêm nhân viên mới</h1>
           <p className="text-muted-foreground">Đăng ký nhân viên với nhận diện khuôn mặt</p>
         </div>
         <Button variant="outline" onClick={() => router.back()}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Quay lại
         </Button>
       </div>
 
-      {/* Result Alert */}
-      {result && (
-        <div className={`p-4 rounded-lg border ${
-          result.success 
-            ? "border-green-500 bg-green-50 text-green-800" 
-            : "border-red-500 bg-red-50 text-red-800"
-        }`}>
-          <div className="flex items-center gap-2">
-            {result.success ? (
-              <CheckCircle className="h-4 w-4 text-green-600" />
-            ) : (
-              <AlertCircle className="h-4 w-4 text-red-600" />
-            )}
-            <span>{result.message}</span>
-          </div>
-        </div>
+      {/* Result Alert & QR Code */}
+      {result?.success && (
+        <Card className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-500" />
+                Đăng ký thành công
+            </CardTitle>
+            <CardDescription>{result.message}</CardDescription>
+          </CardHeader>
+          {result.qrCode && (
+              <CardContent className="text-center space-y-4 pt-4">
+                  <img src={result.qrCode} alt="QR Code" className="mx-auto w-48 h-48 border rounded-lg p-2" />
+                  <p className="text-sm text-muted-foreground">Nhân viên có thể dùng mã này để chấm công.</p>
+                  <div className="flex gap-2 justify-center">
+                      <Button
+                          onClick={() => {
+                              const link = document.createElement("a")
+                              link.href = result.qrCode!
+                              link.download = `${name.replace(/\s+/g, '_')}-QR.png`
+                              link.click()
+                          }}
+                      >
+                          Tải xuống QR
+                      </Button>
+                      <Button variant="outline" onClick={resetForm}>
+                          Thêm nhân viên khác
+                      </Button>
+                  </div>
+              </CardContent>
+          )}
+        </Card>
       )}
 
-      {/* QR Code Display */}
-      {result?.success && result.qrCode && (
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">Mã QR cá nhân</CardTitle>
-            <CardDescription>Nhân viên có thể sử dụng mã QR này để chấm công</CardDescription>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <img src={result.qrCode || "/placeholder.svg"} alt="QR Code" className="mx-auto w-48 h-48" />
-            <div className="flex gap-2 justify-center">
-              <Button
-                onClick={() => {
-                  const link = document.createElement("a")
-                  link.href = result.qrCode!
-                  link.download = `${name}-qr-code.png`
-                  link.click()
-                }}
-              >
-                Tải xuống QR
-              </Button>
-              <Button variant="outline" onClick={resetForm}>
-                Thêm nhân viên khác
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Error Alert */}
+      {result && !result.success && (
+          <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700/50 p-4 rounded-lg flex items-center gap-3">
+              <AlertCircle className="h-5 w-5" />
+              <div>
+                  <p className="font-semibold">Đăng ký thất bại</p>
+                  <p className="text-sm">{result.message}</p>
+              </div>
+          </div>
       )}
 
       {/* Registration Form */}
       {!result?.success && (
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Employee Name */}
-          <Card className="bg-card border-border">
+          <Card className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
             <CardHeader>
-              <CardTitle className="text-card-foreground flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5" />
                 Thông tin nhân viên
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent>
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-card-foreground">
-                  Tên nhân viên
-                </label>
-                <input
+                <Label htmlFor="name">Tên nhân viên</Label>
+                <Input
                   id="name"
-                  type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Nhập tên đầy đủ"
                   required
-                  className="w-full px-3 py-2 border border-border rounded-md bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                 />
               </div>
             </CardContent>
           </Card>
 
-          {/* Face Photo */}
-          <Card className="bg-card border-border">
+          <Card className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
             <CardHeader>
-              <CardTitle className="text-card-foreground flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <Camera className="h-5 w-5" />
                 Ảnh khuôn mặt
               </CardTitle>
-              <CardDescription>Chụp hoặc tải ảnh khuôn mặt để đăng ký nhận diện</CardDescription>
+              <CardDescription>Chụp hoặc tải ảnh khuôn mặt để đăng ký nhận diện.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {imagePreview ? (
-                <div className="space-y-4">
-                  <div className="relative">
+                <div className="space-y-4 text-center">
+                  <div className="relative w-full max-w-sm mx-auto">
                     <img
-                      src={imagePreview || "/placeholder.svg"}
-                      alt="Preview"
-                      className="w-full max-w-md mx-auto rounded-lg border border-border"
+                      src={imagePreview}
+                      alt="Xem trước"
+                      className="w-full rounded-lg border aspect-square object-cover"
                     />
                   </div>
-                  <div className="flex gap-2 justify-center">
-                    <Button type="button" variant="outline" onClick={() => setImagePreview(null)}>
-                      Chọn ảnh khác
-                    </Button>
-                  </div>
+                  <Button type="button" variant="outline" onClick={() => { setSelectedImage(null); setImagePreview(null); }}>
+                    Chọn ảnh khác
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex gap-2 justify-center">
-                    <Button type="button" onClick={captureFromCamera} variant="outline">
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <Button type="button" onClick={captureFromCamera} variant="outline" className="w-full sm:w-auto">
                       <Camera className="h-4 w-4 mr-2" />
                       Chụp ảnh
                     </Button>
@@ -239,6 +229,7 @@ export default function AddEmployeePage() {
                       type="button"
                       onClick={() => document.getElementById("file-upload")?.click()}
                       variant="outline"
+                       className="w-full sm:w-auto"
                     >
                       <Upload className="h-4 w-4 mr-2" />
                       Tải ảnh lên
@@ -247,18 +238,12 @@ export default function AddEmployeePage() {
                   <input id="file-upload" type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 </div>
               )}
-
-              {showCamera && (
-                <div className="space-y-4">
-                  <CameraCapture onCapture={handleCameraCapture} onCancel={() => setShowCamera(false)} />
-                </div>
-              )}
+              {showCamera && <CameraCapture onCapture={handleCameraCapture} onCancel={() => setShowCamera(false)} />}
             </CardContent>
           </Card>
 
-          {/* Submit Button */}
           <div className="flex justify-end">
-            <Button type="submit" disabled={!name || !selectedImage || isSubmitting} className="min-w-32">
+            <Button type="submit" disabled={!name || !selectedImage || isSubmitting}>
               {isSubmitting ? "Đang xử lý..." : "Đăng ký nhân viên"}
             </Button>
           </div>
@@ -268,39 +253,34 @@ export default function AddEmployeePage() {
   )
 }
 
-// Simple camera capture component
 function CameraCapture({ onCapture, onCancel }: { onCapture: (imageData: string) => void; onCancel: () => void }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
-  const [isStreaming, setIsStreaming] = useState(false)
+  const [stream, setStream] = useState<MediaStream | null>(null)
 
   React.useEffect(() => {
+    const startCamera = async () => {
+      try {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true })
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream
+        }
+        setStream(mediaStream)
+      } catch (error) {
+        console.error("Camera access failed:", error)
+        // Handle camera access error (e.g., show a message to the user)
+      }
+    }
+
     startCamera()
-    return () => stopCamera()
+
+    return () => {
+      stream?.getTracks().forEach((track) => track.stop())
+    }
   }, [])
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
-        setIsStreaming(true)
-      }
-    } catch (error) {
-      console.error("Camera access failed:", error)
-    }
-  }
-
-  const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream
-      stream.getTracks().forEach((track) => track.stop())
-    }
-    setIsStreaming(false)
-  }
-
   const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return
+    if (!videoRef.current || !canvasRef.current || !stream) return
 
     const canvas = canvasRef.current
     const video = videoRef.current
@@ -311,20 +291,20 @@ function CameraCapture({ onCapture, onCancel }: { onCapture: (imageData: string)
     const ctx = canvas.getContext("2d")
     if (ctx) {
       ctx.drawImage(video, 0, 0)
-      const imageData = canvas.toDataURL("image/jpeg", 0.8)
+      const imageData = canvas.toDataURL("image/jpeg", 0.9)
       onCapture(imageData)
-      stopCamera()
+      stream.getTracks().forEach((track) => track.stop())
     }
   }
 
   return (
     <div className="space-y-4">
-      <div className="relative bg-muted rounded-lg overflow-hidden aspect-video">
+      <div className="relative bg-muted rounded-lg overflow-hidden aspect-video max-w-sm mx-auto border">
         <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
         <canvas ref={canvasRef} className="hidden" />
       </div>
       <div className="flex gap-2 justify-center">
-        <Button type="button" onClick={capturePhoto} disabled={!isStreaming}>
+        <Button type="button" onClick={capturePhoto} disabled={!stream}>
           Chụp ảnh
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>

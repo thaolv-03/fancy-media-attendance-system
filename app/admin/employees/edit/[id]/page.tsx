@@ -99,6 +99,7 @@ export default function EditEmployeePage() {
       toast({
         title: "Thành công!",
         description: `Đã cập nhật thông tin cho nhân viên ${name}.`,
+        className: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-700/50",
       })
       router.push("/admin/employees")
 
@@ -114,65 +115,75 @@ export default function EditEmployeePage() {
     }
   }
 
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center p-12">
+            <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
+        </div>
+    )
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-        <Card className="max-w-2xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-3xl font-bold">Chỉnh sửa thông tin nhân viên</h1>
+                <p className="text-muted-foreground">Cập nhật chi tiết cho nhân viên trong hệ thống.</p>
+            </div>
+        </div>
+
+        {/* Form Fields */}
+        <Card className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
             <CardHeader>
-                <CardTitle>Chỉnh sửa thông tin nhân viên</CardTitle>
-                <CardDescription>Cập nhật chi tiết cho nhân viên trong hệ thống.</CardDescription>
+                <CardTitle>Thông tin chi tiết</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                {isLoading ? (
-                    <div className="flex items-center justify-center py-12">
-                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="id">ID Nhân viên</Label>
-                            <Input id="id" value={employee?.id || ""} disabled />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Tên nhân viên</Label>
-                            <Input
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="qrCode">Mã QR</Label>
-                            <Input
-                            id="qrCode"
-                            value={qrCode}
-                            onChange={(e) => setQrCode(e.target.value)}
-                            required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Ngày tạo</Label>
-                            <Input value={employee ? new Date(employee.created_at).toLocaleString("vi-VN") : ""} disabled />
-                        </div>
-                    </div>
-                )}
+                <div className="space-y-2">
+                    <Label htmlFor="id">ID Nhân viên</Label>
+                    <Input id="id" value={employee?.id || ""} disabled />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="name">Tên nhân viên</Label>
+                    <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="qrCode">Mã QR</Label>
+                    <Input
+                    id="qrCode"
+                    value={qrCode}
+                    onChange={(e) => setQrCode(e.target.value)}
+                    required
+                    />
+                </div>
+                <div className="space-y-2">
+                    <Label>Ngày tạo</Label>
+                    <Input value={employee ? new Date(employee.created_at).toLocaleString("vi-VN") : ""} disabled />
+                </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
-                <Button variant="outline" asChild>
-                    <Link href="/admin/employees">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Hủy
-                    </Link>
-                </Button>
-                <Button type="submit" disabled={isSaving || isLoading}>
-                    {isSaving ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                        <Save className="mr-2 h-4 w-4" />
-                    )}
-                    Lưu thay đổi
-                </Button>
-            </CardFooter>
         </Card>
+
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-2">
+             <Button variant="outline" asChild type="button">
+                <Link href="/admin/employees">
+                    Hủy
+                </Link>
+            </Button>
+            <Button type="submit" disabled={isSaving || isLoading}>
+                {isSaving ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                )}
+                Lưu thay đổi
+            </Button>
+        </div>
     </form>
   )
 }

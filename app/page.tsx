@@ -73,8 +73,8 @@ export default function ModernHomePage() {
         {/* Features Section */}
         <section id="features" className="py-24 sm:py-32">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Tại sao nên chọn hệ thống của chúng tôi?</h2>
-            <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">Nền tảng của chúng tôi cung cấp một giải pháp toàn diện và dễ sử dụng.</p>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Chức năng của hệ thống chấm công thông minh</h2>
+            <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">Hệ thống ứng dụng nhiều công nghệ hiện đại như nhận diện khuôn mặt, video, và các công cụ phân tích dữ liệu</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard 
@@ -103,14 +103,14 @@ export default function ModernHomePage() {
             />
             <FeatureCard 
               icon={<Palette size={24} className="text-pink-500"/>}
-              title="Tùy chỉnh linh hoạt"
-              description="Giao diện có thể được điều chỉnh để phù hợp với thương hiệu của công ty bạn."
+              title="Giao diện tinh gọn"
+              description="Giao diện được tinh gọn để người dùng có thể dễ dàng sử dụng."
               color="pink"
             />
             <FeatureCard 
               icon={<Settings size={24} className="text-gray-500"/>}
               title="Dễ dàng cấu hình"
-              description="Thiết lập và cấu hình hệ thống nhanh chóng cho các yêu cầu cụ thể."
+              description="Thiết lập và cấu hình hệ thống nhanh chóng."
               color="gray"
             />
           </div>

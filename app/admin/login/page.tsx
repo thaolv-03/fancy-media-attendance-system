@@ -1,60 +1,77 @@
+'use client'
 
-// Use 'use client' to be able to use the useSearchParams hook
-'use client';
+import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Loader2 } from 'lucide-react'
+import { useFormStatus } from 'react-dom'
 
-import { useSearchParams } from 'next/navigation';
+// A button that shows a loading spinner when the form is submitting
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  return (
+    <Button type="submit" disabled={pending} className="w-full">
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Đăng nhập
+    </Button>
+  )
+}
 
-// This component now only displays the form and any errors passed in the URL.
+// A component to display any error messages from the server
 function ErrorMessage() {
-  const searchParams = useSearchParams();
-  const error = searchParams.get('error');
-
-  if (!error) return null;
-
-  return <p className="text-red-500 text-sm mb-4">{error}</p>;
+  const searchParams = useSearchParams()
+  const error = searchParams.get('error')
+  if (!error) return null
+  return <p className="text-red-500 text-sm text-center">{error}</p>
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-6 text-center">Đăng nhập</h1>
-        {/* The form now submits directly to the API route */}
-        <form action="/api/auth/login" method="POST">
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="username">
-              Tên đăng nhập
-            </label>
-            <input
-              id="username"
-              name="username" // Name attribute is required for form submission
-              type="text"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-              required
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-slate-100 dark:bg-slate-950">
+        <div className="mb-8">
+            <Image
+                src="/fancy-media-logo.svg"
+                alt="Fancy Media"
+                width={200}
+                height={50}
+                className="dark:invert"
             />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="password">
-              Mật khẩu
-            </label>
-            <input
-              id="password"
-              name="password" // Name attribute is required for form submission
-              type="password"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-              required
-            />
-          </div>
-          {/* Display error messages from URL search params */}
-          <ErrorMessage />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
-          >
-            Đăng nhập
-          </button>
-        </form>
-      </div>
+        </div>
+      <Card className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">Đăng nhập</CardTitle>
+          {/* <CardDescription>Trang quản trị</CardDescription> */}
+        </CardHeader>
+        <CardContent>
+          <form action="/api/auth/login" method="POST" className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Tên đăng nhập</Label>
+              <Input 
+                id="username" 
+                name="username" 
+                type="text" 
+                // placeholder="admin"
+                required 
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Mật khẩu</Label>
+              <Input 
+                id="password" 
+                name="password" 
+                type="password" 
+                required 
+              />
+            </div>
+            <ErrorMessage />
+            <div className="mt-7">
+              <SubmitButton />
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }

@@ -1,42 +1,33 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { BarChart3 } from "lucide-react";
 
 export default function StatisticsPage() {
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Thống kê</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Tổng số nhân viên
-            </CardTitle>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="h-4 w-4 text-muted-foreground"
-            >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">...</div>
-            <p className="text-xs text-muted-foreground">
-              Đang tải...
-            </p>
-          </CardContent>
+    <div className="space-y-8">
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">Thống kê</h1>
+                <p className="text-slate-500 dark:text-slate-400 mt-1">Phân tích và xem dữ liệu chấm công trực quan.</p>
+            </div>
+        </div>
+
+        {/* Content */}
+        <Card className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+           <CardContent className="py-16">
+                <div className="text-center">
+                    <BarChart3 className="mx-auto h-12 w-12 text-slate-400" />
+                    <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-slate-50">
+                        Tính năng đang được phát triển
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                        Chúng tôi đang làm việc để mang đến cho bạn các báo cáo và thống kê chi tiết. Vui lòng quay lại sau.
+                    </p>
+                </div>
+           </CardContent>
         </Card>
-      </div>
-      <p className="text-center text-muted-foreground">Chức năng thống kê chi tiết đang được phát triển.</p>
     </div>
   );
 }

@@ -52,13 +52,15 @@ export async function GET() {
             timestamp: string;
             check_type: string;
             status: string;
+            method: string;
         }[];
 
         const recentActivity = recentActivityRaw.map(activity => ({
             name: activity.user_name,
-            timestamp: activity.timestamp, // Return the full timestamp
-            status: activity.check_type, // 'Check-in' or 'Check-out'
-            type: activity.status // 'Đúng giờ', 'Đi muộn', 'Về sớm'
+            timestamp: activity.timestamp,
+            check_type: activity.check_type, // 'Check-in' or 'Check-out'
+            status: activity.status, // 'Đúng giờ', 'Đi muộn', 'Về sớm'
+            method: activity.method // 'FaceID...' or 'QR'
         }));
 
         // 4. Assemble the final stats object
