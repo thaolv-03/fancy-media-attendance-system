@@ -109,6 +109,8 @@ export default function AttendancePage() {
           record.status.toLowerCase().includes(searchTerm.toLowerCase()),
     ), [records, searchTerm]);
 
+    const isFaceMethod = (method: string) => method.toLowerCase().includes('face');
+
   return (
     <div className="space-y-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -172,8 +174,8 @@ export default function AttendancePage() {
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell text-slate-500 dark:text-slate-400">{record.check_type}</TableCell>
                                         <TableCell className="hidden md:table-cell">
-                                          <Badge variant={record.method.startsWith('FaceID') ? 'default' : 'secondary'}>
-                                            {record.method.startsWith('FaceID') ? 'Khuôn mặt' : 'QR'}
+                                          <Badge variant={isFaceMethod(record.method) ? 'default' : 'secondary'}>
+                                            {isFaceMethod(record.method) ? 'Khuôn mặt' : 'QR'}
                                           </Badge>
                                         </TableCell>
                                         <TableCell className="text-right">

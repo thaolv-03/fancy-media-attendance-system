@@ -70,14 +70,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Facenet512 approach: 0.30 threshold (0.25-0.35 range)
-    const similarityThreshold = 0.30 // DeepFace recommended threshold
+    // --- CRITICAL SECURITY UPDATE ---
+    // Increased thresholds to prevent false positives.
+    // Original values: similarityThreshold = 0.30, minConfidenceGap = 0.02
+    const similarityThreshold = 0.65 // Stricter threshold for higher accuracy
     const confidenceGap = bestMatch.similarity - (secondBest?.similarity || 0)
-    const minConfidenceGap = 0.02 // Reduced for better acceptance
+    const minConfidenceGap = 0.10 // Require a more significant gap between the best and second-best match
 
     console.log("[Face Recognition] Confidence gap:", (confidenceGap * 100).toFixed(2) + "%")
-    console.log("[Face Recognition] Required similarity:", (similarityThreshold * 100).toFixed(0) + "%")
-    console.log("[Face Recognition] Required confidence gap:", (minConfidenceGap * 100).toFixed(0) + "%")
+    console.log("[Face Recognition] Required similarity:", (similarityThreshold * 100).toFixed(0) + "% (Updated from 30%)")
+    console.log("[Face Recognition] Required confidence gap:", (minConfidenceGap * 100).toFixed(0) + "% (Updated from 2%)")
+
 
     if (bestMatch.similarity >= similarityThreshold && confidenceGap >= minConfidenceGap) {
       console.log("[Face Recognition] ✅ Recognition SUCCESSFUL")
