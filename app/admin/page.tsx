@@ -1,12 +1,27 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Users, Clock, TrendingUp, AlertCircle, Loader2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Users, Clock, TrendingUp, AlertTriangle, UserPlus, FileText, Loader2, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
 
-// Define the structure of the stats data
 interface AdminStats {
   totalEmployees: number;
   totalEmployeesFromLastMonth: number;
@@ -17,18 +32,30 @@ interface AdminStats {
   lateTodayCount: number;
   recentActivity: {
     name: string;
-    timestamp: string; // Changed from time to timestamp
+    timestamp: string;
     status: string;
     type: string;
   }[];
 }
 
-// A component to show a loading spinner for card content
-const StatCardLoading = () => (
-  <div className="flex items-center justify-center pt-2">
-    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-  </div>
-);
+const StatCard = ({ title, value, subtext, icon, loading }: { title: string, value: string | number, subtext: string, icon: React.ReactNode, loading: boolean }) => (
+    <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{title}</CardTitle>
+            {icon}
+        </CardHeader>
+        <CardContent>
+            {loading ? (
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground mt-1" />
+            ) : (
+                <>
+                    <div className="text-2xl font-bold">{value}</div>
+                    <p className="text-xs text-muted-foreground">{subtext}</p>
+                </>
+            )}
+        </CardContent>
+    </Card>
+)
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null);
@@ -58,153 +85,121 @@ export default function AdminDashboard() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-full p-6">
-        <div className="text-center">
-          <AlertCircle className="mx-auto h-12 w-12 text-red-500" />
-          <h2 className="mt-4 text-xl font-semibold text-foreground">Error</h2>
-          <p className="mt-2 text-muted-foreground">{error}</p>
-        </div>
+        <Card className="w-full max-w-md">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><AlertCircle className="text-destructive"/> Lỗi</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-muted-foreground">{error}</p>
+            </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground">Tổng quan hệ thống chấm công</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">Tổng quan về hệ thống chấm công của bạn.</p>
         </div>
         <div className="flex gap-2">
-          <Button asChild>
-            <Link href="/admin/employees/add">Thêm nhân viên</Link>
+          <Button asChild variant="outline">
+            <Link href="/admin/employees/add"><UserPlus className="mr-2 h-4 w-4" />Thêm nhân viên</Link>
           </Button>
-          {/* Note: The report link might need to be adjusted based on the final implementation */}
-          <Button variant="outline" asChild>
-            <Link href="/admin/attendance">Xem báo cáo</Link>
+          <Button asChild>
+            <Link href="/admin/attendance"><FileText className="mr-2 h-4 w-4" />Xem báo cáo</Link>
           </Button>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-card border-border">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-card-foreground">Tổng nhân viên</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {loading || !stats ? (
-              <StatCardLoading />
-            ) : (
-              <>
-                <div className="text-2xl font-bold text-card-foreground">{stats.totalEmployees}</div>
-                <p className="text-xs text-muted-foreground">+{stats.totalEmployeesFromLastMonth} từ tháng trước</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card border-border">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-card-foreground">Chấm công hôm nay</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {loading || !stats ? (
-              <StatCardLoading />
-            ) : (
-              <>
-                <div className="text-2xl font-bold text-card-foreground">{stats.checkInsToday}</div>
-                <p className="text-xs text-muted-foreground">{stats.checkInsTodayPercentage}% đã chấm công</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card border-border">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-card-foreground">Đúng giờ</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {loading || !stats ? (
-              <StatCardLoading />
-            ) : (
-              <>
-                <div className="text-2xl font-bold text-card-foreground">{stats.onTimePercentage}%</div>
-                <p className="text-xs text-muted-foreground">+{stats.onTimePercentageChange}% từ tuần trước</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card border-border">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-card-foreground">Đi muộn</CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {loading || !stats ? (
-              <StatCardLoading />
-            ) : (
-              <>
-                <div className="text-2xl font-bold text-card-foreground">{stats.lateTodayCount}</div>
-                <p className="text-xs text-muted-foreground">Hôm nay</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">Hoạt động gần đây</CardTitle>
-            <CardDescription>5 lần chấm công mới nhất</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {loading || !stats ? (
-              <div className="flex justify-center items-center py-8">
-                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Main content: Stats and Recent Activity */}
+          <div className="lg:col-span-2 space-y-6">
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <StatCard 
+                      title="Tổng nhân viên" 
+                      value={stats?.totalEmployees ?? 0}
+                      subtext={stats ? `+${stats.totalEmployeesFromLastMonth} từ tháng trước` : ""}
+                      icon={<Users className="h-4 w-4 text-muted-foreground" />}
+                      loading={loading}
+                  />
+                  <StatCard 
+                      title="Chấm công hôm nay" 
+                      value={stats?.checkInsToday ?? '0'}
+                      subtext={stats ? `${stats.checkInsTodayPercentage}% đã chấm công` : ""}
+                      icon={<Clock className="h-4 w-4 text-muted-foreground" />}
+                      loading={loading}
+                  />
+                  <StatCard 
+                      title="Tỷ lệ đúng giờ" 
+                      value={stats ? `${stats.onTimePercentage}%` : '0%'}
+                      subtext={stats ? `${stats.onTimePercentageChange >= 0 ? '+' : ''}${stats.onTimePercentageChange}% so với tuần trước` : ""}
+                      icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+                      loading={loading}
+                  />
+                  <StatCard 
+                      title="Đi muộn hôm nay" 
+                      value={stats?.lateTodayCount ?? 0}
+                      subtext="Số lượng nhân viên đi muộn" 
+                      icon={<AlertTriangle className="h-4 w-4 text-muted-foreground" />}
+                      loading={loading}
+                  />
               </div>
-            ) : stats.recentActivity.length > 0 ? (
-              stats.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary-foreground">{activity.name.charAt(0)}</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{activity.name}</p>
-                      <p className="text-xs text-muted-foreground">{activity.status}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-foreground">
-                      {new Date(activity.timestamp + 'Z').toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                    </p>
-                    <p
-                      className={`text-xs ${
-                        activity.type === "Đúng giờ"
-                          ? "text-green-600"
-                          : activity.type === "Đi muộn"
-                            ? "text-red-600"
-                            : "text-yellow-600"
-                      }`}
-                    >
-                      {activity.type}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-                <p className="text-center text-muted-foreground py-8">Không có hoạt động nào gần đây.</p>
-            )}
-          </CardContent>
-        </Card>
-        {/* Weekly stats card removed for simplification as backend logic is not ready for it */}
+          </div>
+
+          {/* Side content: Recent Activity */}
+          <div className="lg:col-span-1">
+              <Card>
+                  <CardHeader>
+                      <CardTitle>Hoạt động gần đây</CardTitle>
+                      <CardDescription>5 lần chấm công mới nhất trong hệ thống.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      {loading && !stats ? (
+                          <div className="flex justify-center items-center py-8">
+                              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                          </div>
+                      ) : stats && stats.recentActivity.length > 0 ? (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Nhân viên</TableHead>
+                                    <TableHead className="text-right">Thời gian</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                            {stats.recentActivity.map((activity, index) => (
+                                <TableRow key={index}>
+                                <TableCell>
+                                    <div className="font-medium">{activity.name}</div>
+                                    <div className="text-sm text-muted-foreground hidden sm:block">{activity.status}</div>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <div className="font-medium">{new Date(activity.timestamp + 'Z').toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    <Badge 
+                                        variant={activity.type === 'Đi muộn' || activity.type === 'Về sớm' ? "destructive" : "outline"}
+                                        className={cn("text-xs", {
+                                            'bg-green-100 text-green-800 border-green-200': activity.type === 'Đúng giờ'
+                                        })}
+                                    >
+                                    {activity.type}
+                                    </Badge>
+                                </TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                      ) : (
+                          <div className="text-center text-muted-foreground py-12">
+                              <p>Không có hoạt động nào gần đây.</p>
+                          </div>
+                      )}
+                  </CardContent>
+              </Card>
+          </div>
       </div>
     </div>
   )

@@ -2,10 +2,19 @@
 
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Search, Plus, Download, Edit, Trash2, Loader2 } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Search, Plus, Edit, Trash2, Loader2, UserPlus } from "lucide-react"
 import Link from "next/link"
 import type { User } from "@/lib/types"
 import { useToast } from "@/components/ui/use-toast"
@@ -79,113 +88,111 @@ export default function EmployeesPage() {
   )
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Quản lý nhân viên</h1>
-          <p className="text-muted-foreground">Danh sách và thông tin nhân viên</p>
-        </div>
-        <div className="flex gap-2">
-          <Button asChild>
-            <Link href="/admin/employees/add">
-              <Plus className="h-4 w-4 mr-2" />
-              Thêm nhân viên
-            </Link>
-          </Button>
-        </div>
-      </div>
-
-      {/* Search */}
-      <Card className="bg-card border-border">
-        <CardContent className="pt-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm nhân viên..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border border-border rounded-md bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Employee List */}
-      <Card className="bg-card border-border">
+    <Card>
         <CardHeader>
-          <CardTitle className="text-card-foreground">Danh sách nhân viên ({filteredEmployees.length})</CardTitle>
+            <div className="flex items-center justify-between">
+                <div>
+                    <CardTitle>Quản lý nhân viên</CardTitle>
+                    <CardDescription>Thêm, sửa, xóa và xem thông tin nhân viên.</CardDescription>
+                </div>
+                <Button asChild>
+                    <Link href="/admin/employees/add">
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Thêm nhân viên
+                    </Link>
+                </Button>
+            </div>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="text-center py-8 flex justify-center items-center">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                <p className="ml-3 text-muted-foreground">Đang tải danh sách nhân viên...</p>
-            </div>
-          ) : filteredEmployees.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">
-                {searchTerm ? "Không tìm thấy nhân viên nào" : "Chưa có nhân viên nào."}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredEmployees.map((employee) => (
-                <div
-                  key={employee.id}
-                  className="flex items-center justify-between p-4 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-lg font-medium text-primary-foreground">{employee.name.charAt(0)}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-foreground">{employee.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        ID: {employee.id} • QR: {employee.qr_code}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Đăng ký: {new Date(employee.created_at).toLocaleDateString("vi-VN")}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" asChild>
-                       <Link href={`/admin/employees/edit/${employee.id}`}>
-                           <Edit className="h-4 w-4 mr-1"/> Sửa
-                       </Link>
-                    </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDeleteClick(employee)} disabled={isDeleting}>
-                       <Trash2 className="h-4 w-4 mr-1"/> Xóa
-                    </Button>
-                  </div>
+            <div className="mb-4">
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        placeholder="Tìm kiếm theo tên nhân viên..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full max-w-sm pl-9"
+                    />
                 </div>
-              ))}
             </div>
-          )}
+            <div className="border rounded-lg">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[250px]">Tên nhân viên</TableHead>
+                            <TableHead>Mã QR</TableHead>
+                            <TableHead className="hidden md:table-cell">Ngày tạo</TableHead>
+                            <TableHead className="text-right">Hành động</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                    {loading ? (
+                        <TableRow>
+                            <TableCell colSpan={5} className="h-24 text-center">
+                                <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
+                            </TableCell>
+                        </TableRow>
+                    ) : filteredEmployees.length > 0 ? (
+                        filteredEmployees.map((employee) => (
+                            <TableRow key={employee.id}>
+                                <TableCell>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-muted-foreground/20 rounded-full flex items-center justify-center font-bold text-primary">
+                                            {employee.name.charAt(0)}
+                                        </div>
+                                        <div className="font-medium">{employee.name}</div>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant="outline">{employee.qr_code}</Badge>
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                    {new Date(employee.created_at).toLocaleDateString("vi-VN")}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <Button variant="outline" size="sm" asChild className="mr-2">
+                                        <Link href={`/admin/employees/edit/${employee.id}`}>
+                                            <Edit className="h-4 w-4"/>
+                                            <span className="sr-only">Sửa</span>
+                                        </Link>
+                                    </Button>
+                                    <Button variant="destructive" size="sm" onClick={() => handleDeleteClick(employee)} disabled={isDeleting}>
+                                        <Trash2 className="h-4 w-4"/>
+                                        <span className="sr-only">Xóa</span>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={5} className="h-24 text-center">
+                                {searchTerm ? "Không tìm thấy nhân viên nào." : "Chưa có nhân viên nào."}
+                            </TableCell>
+                        </TableRow>
+                    )}
+                    </TableBody>
+                </Table>
+            </div>
         </CardContent>
-      </Card>
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Bạn có chắc chắn muốn xóa?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Hành động này không thể hoàn tác. Thao tác này sẽ xóa vĩnh viễn nhân viên 
-              <span className="font-bold">{selectedEmployee?.name}</span> và tất cả dữ liệu chấm công liên quan.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Hủy</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} disabled={isDeleting}>
-              {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Tiếp tục
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Bạn có chắc chắn muốn xóa?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Hành động này không thể hoàn tác. Thao tác này sẽ xóa vĩnh viễn nhân viên <span className="font-bold">{selectedEmployee?.name}</span> và tất cả dữ liệu chấm công liên quan.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isDeleting}>Hủy</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleConfirmDelete} disabled={isDeleting}>
+                        {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Tiếp tục
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    </Card>
   )
 }

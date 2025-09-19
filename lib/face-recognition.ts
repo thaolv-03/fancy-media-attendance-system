@@ -38,7 +38,7 @@ export async function extractFaceEmbedding(imageBuffer: Buffer): Promise<FaceRec
     // Extract consistent features
     const embedding = await extractAdvancedFaceFeatures(faceResult.faceRegion, imageBuffer)
     console.log("[Face Recognition] Generated embedding with", embedding.length, "features")
-    
+
     return {
       success: true,
       embedding,
@@ -126,7 +126,7 @@ function detectFaceUsingEnhancedEdges(
       for (let ry = y; ry < y + regionSize && ry < height - 1; ry++) {
         for (let rx = x; rx < x + regionSize && rx < width - 1; rx++) {
           const idx = ry * width + rx
-          
+
           // OpenCV-style gradient calculation
           const gradientX = Math.abs(pixels[idx + 1] - pixels[idx])
           const gradientY = Math.abs(pixels[(ry + 1) * width + rx] - pixels[idx])
@@ -134,11 +134,11 @@ function detectFaceUsingEnhancedEdges(
 
           if (gradient > 15) edgeCount++
           if (gradient > 30) strongEdgeCount++
-          
+
           // Face-like pattern detection (eyes, nose, mouth regions)
           const relativeY = (ry - y) / regionSize
           const relativeX = (rx - x) / regionSize
-          
+
           // Upper region (eyes) should have more edges
           if (relativeY < 0.4 && gradient > 20) {
             faceScore += 2
@@ -151,7 +151,7 @@ function detectFaceUsingEnhancedEdges(
           else if (relativeY >= 0.7 && gradient > 10) {
             faceScore += 1
           }
-          
+
           totalPixels++
         }
       }
@@ -159,10 +159,10 @@ function detectFaceUsingEnhancedEdges(
       const edgeDensity = totalPixels > 0 ? edgeCount / totalPixels : 0
       const strongEdgeDensity = totalPixels > 0 ? strongEdgeCount / totalPixels : 0
       const facePatternScore = totalPixels > 0 ? faceScore / totalPixels : 0
-      
+
       // OpenCV-style weighted scoring
       const score = edgeDensity * 0.4 + strongEdgeDensity * 0.3 + facePatternScore * 0.3
-      
+
       regions.push({ x, y, width: regionSize, height: regionSize, edgeDensity: score })
     }
   }
@@ -480,7 +480,7 @@ async function extractAdvancedFaceFeatures(faceRegion: FaceRegion, imageBuffer: 
       for (let ry = y; ry < y + 8 && ry < 63; ry++) {
         for (let rx = x; rx < x + 8 && rx < 63; rx++) {
           const gradient = Math.abs(pixels[ry * 64 + rx + 1] - pixels[ry * 64 + rx]) +
-                          Math.abs(pixels[(ry + 1) * 64 + rx] - pixels[ry * 64 + rx])
+            Math.abs(pixels[(ry + 1) * 64 + rx] - pixels[ry * 64 + rx])
           if (gradient > 20) edgeCount++
           totalPixels++
         }
@@ -531,7 +531,7 @@ export function cosineDistance(a: number[], b: number[]): number {
   // DeepFace approach: normalize vectors first
   let magnitudeA = 0
   let magnitudeB = 0
-  
+
   for (let i = 0; i < a.length; i++) {
     magnitudeA += a[i] * a[i]
     magnitudeB += b[i] * b[i]
@@ -556,7 +556,7 @@ export function cosineDistance(a: number[], b: number[]): number {
 
   // Clamp similarity to [-1, 1] range
   const cosineSimilarity = Math.max(-1, Math.min(1, dotProduct))
-  
+
   // Convert to distance (DeepFace style: 1 - similarity)
   const distance = 1.0 - cosineSimilarity
 

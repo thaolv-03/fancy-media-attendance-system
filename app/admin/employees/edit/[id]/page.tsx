@@ -2,12 +2,19 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, Save } from "lucide-react"
 import Link from "next/link"
 import type { User } from "@/lib/types"
 
@@ -108,72 +115,64 @@ export default function EditEmployeePage() {
   }
 
   return (
-    <div className="p-6 space-y-6 max-w-2xl mx-auto">
-        <div className="flex items-center gap-4">
-             <Button variant="outline" size="icon" asChild>
-                 <Link href="/admin/employees">
-                     <ArrowLeft className="h-4 w-4" />
-                 </Link>
-             </Button>
-             <div>
-                 <h1 className="text-3xl font-bold text-foreground">Chỉnh sửa thông tin nhân viên</h1>
-                 <p className="text-muted-foreground">Cập nhật chi tiết cho nhân viên trong hệ thống.</p>
-             </div>
-        </div>
-
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="text-card-foreground">Chi tiết nhân viên</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              <p className="ml-3 text-muted-foreground">Đang tải dữ liệu...</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="id">ID Nhân viên</Label>
-                <Input id="id" value={employee?.id || ""} disabled className="bg-muted/50" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="name">Tên nhân viên</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="bg-input"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="qrCode">Mã QR</Label>
-                <Input
-                  id="qrCode"
-                  value={qrCode}
-                  onChange={(e) => setQrCode(e.target.value)}
-                  required
-                  className="bg-input"
-                />
-              </div>
-                <div className="space-y-2">
-                    <Label>Ngày tạo</Label>
-                    <Input value={employee ? new Date(employee.created_at).toLocaleString("vi-VN") : ""} disabled className="bg-muted/50"/>
-                </div>
-              <div className="flex justify-end pt-4">
-                <Button type="submit" disabled={isSaving || isLoading}>
-                  {isSaving ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang lưu...</>
-                  ) : (
-                    "Lưu thay đổi"
-                  )}
+    <form onSubmit={handleSubmit}>
+        <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+                <CardTitle>Chỉnh sửa thông tin nhân viên</CardTitle>
+                <CardDescription>Cập nhật chi tiết cho nhân viên trong hệ thống.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {isLoading ? (
+                    <div className="flex items-center justify-center py-12">
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="id">ID Nhân viên</Label>
+                            <Input id="id" value={employee?.id || ""} disabled />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Tên nhân viên</Label>
+                            <Input
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="qrCode">Mã QR</Label>
+                            <Input
+                            id="qrCode"
+                            value={qrCode}
+                            onChange={(e) => setQrCode(e.target.value)}
+                            required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Ngày tạo</Label>
+                            <Input value={employee ? new Date(employee.created_at).toLocaleString("vi-VN") : ""} disabled />
+                        </div>
+                    </div>
+                )}
+            </CardContent>
+            <CardFooter className="flex justify-between">
+                <Button variant="outline" asChild>
+                    <Link href="/admin/employees">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Hủy
+                    </Link>
                 </Button>
-              </div>
-            </form>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+                <Button type="submit" disabled={isSaving || isLoading}>
+                    {isSaving ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        <Save className="mr-2 h-4 w-4" />
+                    )}
+                    Lưu thay đổi
+                </Button>
+            </CardFooter>
+        </Card>
+    </form>
   )
 }
