@@ -1,9 +1,9 @@
-import type React from "react"
+import React from "react";
 
 export default function EmployeeLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return <div className="employee-theme min-h-screen bg-background">{children}</div>
+  return <>{children}</>;
 }
