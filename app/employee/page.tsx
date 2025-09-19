@@ -221,7 +221,7 @@ export default function EmployeePage() {
             alt="Fancy Media Logo" 
             className="h-8 md:h-12 mx-auto object-contain"
           />
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">Chấm công bằng khuôn mặt</h2>
+          <h2 className="text-lg md:text-4xl font-bold text-gray-800">Chấm công bằng khuôn mặt</h2>
         </header>
         
         <Card className="overflow-hidden rounded-3xl shadow-2xl bg-white/90 backdrop-blur-md border border-blue-100/50 transition-all duration-500 hover:shadow-3xl">
